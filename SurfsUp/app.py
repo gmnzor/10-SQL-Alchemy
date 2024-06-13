@@ -107,8 +107,7 @@ def precip():
     prec_results = []
     for date, prcp in prec_data:
         prec_dict = {}
-        prec_dict['date'] = date
-        prec_dict['prcp'] = prcp
+        prec_dict[date] = prcp
         prec_results.append(prec_dict)
 
     # Close session we opened at beginning of function
@@ -165,19 +164,19 @@ def tobs():
     most_active = station_data[0]
     
     # run second query which will filter by the most active station during the last year 
-    most_active_data = session.query(Measurement.station, Measurement.date, Measurement.tobs).\
+    most_active_data = session.query(Measurement.date, Measurement.tobs).\
         filter(Measurement.station == most_active).\
         filter(Measurement.date <= max_date).\
         filter(Measurement.date >= min_date).\
         all()
 
+
+
     # Create a dictionary from the row data to jsonify
     tobs_results = []
-    for station, date, tobs in most_active_data:
+    for date, tobs in most_active_data:
         tobs_dict = {}
-        tobs_dict['station'] = station
-        tobs_dict['date'] = date
-        tobs_dict['tobs'] = tobs
+        tobs_dict[date] = tobs
         tobs_results.append(tobs_dict)
 
     # Close session we opened at beginning of function
